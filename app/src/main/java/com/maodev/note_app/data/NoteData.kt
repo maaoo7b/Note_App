@@ -4,6 +4,8 @@ import com.maodev.note_app.model.Note
 
 
 class NotesDataSource {
+
+    //TODO Fix dates
     fun loadNotes(): List<Note> {
         return listOf(
             Note(

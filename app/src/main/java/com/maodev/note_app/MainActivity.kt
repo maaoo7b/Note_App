@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.maodev.note_app.data.NotesDataSource
 import com.maodev.note_app.screen.NoteScreen
 import com.maodev.note_app.ui.theme.Note_AppTheme
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NoteScreen(notes = emptyList(), onAddNote = {}, onRemoveNote = {})
+                    NoteScreen(notes = NotesDataSource().loadNotes(), onAddNote = {}, onRemoveNote = {})
                 }
             }
         }

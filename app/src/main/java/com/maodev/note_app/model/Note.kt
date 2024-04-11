@@ -7,5 +7,5 @@ data class Note(
     val noteId:UUID = UUID.randomUUID(),
     val noteTitle : String,
     val noteDescription : String,
-    val noteDateCreated: String
+    val noteDateCreated: String //TODO Change to string value.
 )
