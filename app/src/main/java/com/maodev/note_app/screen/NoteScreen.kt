@@ -1,6 +1,5 @@
 package com.maodev.note_app.screen
 
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,10 +25,15 @@ import androidx.compose.ui.unit.dp
 import com.maodev.note_app.R
 import com.maodev.note_app.components.NoteAddButton
 import com.maodev.note_app.components.NoteInputText
+import com.maodev.note_app.model.Note
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen() {
+fun NoteScreen(
+    notes: List<Note>,
+    onAddNote: (Note) -> Unit,
+    onRemoveNote: (Note) -> Unit
+) {
     var noteTitle by remember {
         mutableStateOf("")
     }
@@ -93,7 +97,13 @@ fun NoteScreen() {
             )
             NoteAddButton(
                 text = stringResource(id = R.string.addNote).uppercase(),
-                onClick = { /*TODO*/ },
+                onClick = {
+                    if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()) {
+                        //TODO SAVE/ADD NOTE
+                        noteTitle = ""
+                        noteDescription = ""
+                    }
+                },
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -103,5 +113,5 @@ fun NoteScreen() {
 @Preview(showBackground = true)
 @Composable
 fun NoteScreenPreview() {
-    NoteScreen()
+    NoteScreen(notes = emptyList(), onAddNote = {}, onRemoveNote = {})
 }
