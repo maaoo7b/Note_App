@@ -1,5 +1,6 @@
 package com.maodev.note_app.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ fun NoteScreen(
     var noteDescription by remember {
         mutableStateOf("")
     }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -105,12 +108,17 @@ fun NoteScreen(
                     .fillMaxWidth()
             )
             NoteAddButton(
-                text = stringResource(id = R.string.addNote).uppercase(),
+                text = stringResource(id = R.string.addNoteButton).uppercase(),
                 onClick = {
                     if (noteTitle.isNotEmpty() && noteDescription.isNotEmpty()) {
-                        //TODO SAVE/ADD NOTE
+                        onAddNote(Note(noteTitle = noteTitle, noteDescription = noteDescription))
                         noteTitle = ""
                         noteDescription = ""
+                        Toast.makeText(
+                            context,
+                            context.getText(R.string.addNoteButton),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 },
                 modifier = Modifier.padding(8.dp)
@@ -118,7 +126,9 @@ fun NoteScreen(
             Divider(modifier = Modifier.padding(8.dp))
             LazyColumn {
                 items(notes) { note ->
-                    NoteCard(note = note, onNoteClicked = {})
+                    NoteCard(
+                        note = note,
+                        onNoteClicked = {onRemoveNote(note)})
                 }
             }
         }
@@ -141,18 +151,16 @@ fun NoteCard(
     ) {
         Column(
             modifier
-                .clickable { }
+                .clickable {onNoteClicked(note) }
                 .padding(horizontal = 14.dp, vertical = 6.dp),
             horizontalAlignment = Alignment.Start) {
             //TODO Give better appearance.
             Text(text = note.noteTitle, style = MaterialTheme.typography.titleMedium)
             Text(text = note.noteDescription, style = MaterialTheme.typography.bodyMedium)
-            Text(text = note.noteDateCreated, style = MaterialTheme.typography.bodyMedium)
+            Text(text = note.noteDateCreated.toString(), style = MaterialTheme.typography.bodyMedium)
 
         }
-
     }
-
 }
 
 @Preview(showBackground = true)
