@@ -37,6 +37,7 @@ import com.maodev.note_app.components.NoteAddButton
 import com.maodev.note_app.components.NoteInputText
 import com.maodev.note_app.data.NotesDataSource
 import com.maodev.note_app.model.Note
+import com.maodev.note_app.util.formatDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -128,7 +129,7 @@ fun NoteScreen(
                 items(notes) { note ->
                     NoteCard(
                         note = note,
-                        onNoteClicked = {onRemoveNote(note)})
+                        onNoteClicked = { onRemoveNote(note) })
                 }
             }
         }
@@ -151,13 +152,16 @@ fun NoteCard(
     ) {
         Column(
             modifier
-                .clickable {onNoteClicked(note) }
+                .clickable { onNoteClicked(note) }
                 .padding(horizontal = 14.dp, vertical = 6.dp),
             horizontalAlignment = Alignment.Start) {
             //TODO Give better appearance.
             Text(text = note.noteTitle, style = MaterialTheme.typography.titleMedium)
             Text(text = note.noteDescription, style = MaterialTheme.typography.bodyMedium)
-            Text(text = note.noteDateCreated.toString(), style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = formatDate(note.noteDateCreated.time),
+                style = MaterialTheme.typography.bodyMedium
+            )
 
         }
     }

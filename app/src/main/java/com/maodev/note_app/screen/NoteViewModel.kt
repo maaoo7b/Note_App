@@ -1,10 +1,7 @@
 package com.maodev.note_app.screen
 
-import android.util.Log
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.maodev.note_app.model.Note
 import com.maodev.note_app.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,11 +22,7 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository) 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllNotes().distinctUntilChanged().collect{listOfNotes->
-                if(listOfNotes.isNullOrEmpty()){
-                    Log.d("Empty", ":Empty list")
-                }else{
                     _noteList.value=listOfNotes
-                }
             }
         }
         //noteList.addAll(NotesDataSource().loadNotes()
