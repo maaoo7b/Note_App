@@ -3,14 +3,15 @@ package com.maodev.note_app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.maodev.note_app.model.Note
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maodev.note_app.screen.NoteScreen
+import com.maodev.note_app.screen.NoteViewModel
 import com.maodev.note_app.ui.theme.Note_AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,19 +24,21 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val notes = remember {
-                        mutableStateListOf<Note>()
-                    }
-                    NoteScreen(
-                        notes = notes,
-                        onAddNote = {
-                            notes.add(it)
-                        },
-                        onRemoveNote = {
-                            notes.remove(it)
-                        })
+                    val noteViewModel:NoteViewModel by viewModels()
+                    NotesApp(noteViewModel)
                 }
             }
         }
     }
 }
+
+
+@Composable
+fun NotesApp(noteViewModel: NoteViewModel = viewModel()) {
+    val notesList = noteViewModel.getAllNotes()
+    NoteScreen(
+        notes = notesList,
+        onAddNote = { noteViewModel.addNote(it) },
+        onRemoveNote = { noteViewModel.deleteNote(it) })
+}
+
